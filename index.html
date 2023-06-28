@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="calculator.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>Calculator</title>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="results-container">10</div>
+        <div class="button-container">
+            <button class="number-button" id="zero" onclick="addToDisplay(0)">0</button>
+            <button class="number-button" id="one" onclick="addToDisplay(1)">1</button>
+            <button class="number-button" id="two" onclick="addToDisplay(2)">2</button>
+            <button class="number-button" id="three" onclick="addToDisplay(3)">3</button>
+            <button class="number-button" id="four" onclick="addToDisplay(4)">4</button>
+            <button class="number-button" id="five" onclick="addToDisplay(5)">5</button>
+            <button class="number-button" id="six" onclick="addToDisplay(6)">6</button>
+            <button class="number-button" id="seven" onclick="addToDisplay(7)">7</button>
+            <button class="number-button" id="eight" onclick="addToDisplay(8)">8</button>
+            <button class="number-button" id="nine" onclick="addToDisplay(9)">9</button>
+            <button class="calculator-button" id="add">+</button>
+            <button class="calculator-button" id="subtract">-</button>
+            <button class="calculator-button" id="multiply">*</button>
+            <button class="calculator-button" id="divide">/</button>
+            <button class="calculator-button" id="square">^2</button>
+            <button class="calculator-button" id="power">^</button>
+            <button class="calculator-button" id="equals">=</button>        
+            <button class="calculator-button" id="clear" onclick="clearDisplay()">clear</button>
+        </div>
+    </div>
+</body>
+</html>
