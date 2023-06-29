@@ -72,7 +72,9 @@ function calculateResult() {
     storedInput = result;
     isResult = true;
 
-    displayDiv.textContent = result;
+    if (!isNaN(result)) {
+        displayDiv.textContent = result;
+    }
 }
 
 /* This function adds an inputted number to the display. 
@@ -121,16 +123,16 @@ function operate(operator, num1, num2) {
             returnValue = power(num1, num2);
             break;
         case '/':
-            returnValue = divide(num1, num2);
+            if (num2 != 0) {
+                returnValue = divide(num1, num2);
+            }
+            else {
+                alert("Who divides by 0?");
+            }
             break;
         default:
             alert("Incorrect input");
     }
 
-    if (returnValue) {
-        return returnValue;
-    }
-    else {
-        alert("Error, please try again.");
-    }
+    return returnValue;
 }
