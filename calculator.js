@@ -1,79 +1,96 @@
-//This stores the resultsDisplay div
-const resultsDisplay = document.querySelector('.results-container');
+const displayDiv = document.querySelector(".results-container");
 
-//This stores the currently chosen calculator operation
-let currentOperator = "";
+//Stores the selected operation
+let operationVar = "";
 
-/* This stores the number in the display when an operation button 
- * is clicked.
+//Stores the displayed number when the user selects an operation
+let storedInput;
+
+/* Tracks if the displayed number is the result of a previous 
+ * operation or has been inputted by the UserActivation. 
  */
-let resultsDisplayNum;
+let isResult = false;
 
-//This resets the display to display 0.
-function clearDisplay() {
-    resultsDisplay.textContent = '0';
+/* Adds listeners for number buttons. 
+ * When a number key is pressed, addToDisplay is called which adds
+ * the number to the display. 
+ */
+const numberButtons = document.querySelectorAll(".number-button");
+numberButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+        addToDisplay(parseInt(button.textContent));
+    });
+});
+
+/* Adds listener for the clear button. 
+ * When the clear button is pressed, the results div is set to 0.
+ */
+const clearButton = document.querySelector("#clear");
+clearButton.addEventListener('click', clear);
+
+//Adds listener for equals button. 
+const equalsButton = document.querySelector("#equals");
+equalsButton.addEventListener('click', calculateResult);
+
+/* Adds listeners for the operation buttons. 
+ * 
+ */
+const calcButtons = document.querySelectorAll(".calculator-button");
+calcButtons.forEach((button) => {
+    button.addEventListener('click', function() {
+        addOperation(button.textContent);
+    });
+});
+
+//Clears the display and displays only 0.
+function clearDisplay() {displayDiv.textContent = 0;}
+
+//Clears the display and resets all global variables
+function clear() {
+    clearDisplay();
+    operationVar = "";
+    storedInput = undefined;
+    isResult = false;
 }
 
-/* This function is called when the clear button is pressed. 
- * It resets the display to display the number 0. 
- * It sets resultsDisplayNum to undefined so that isNaN
- * works correctly in the operandFunction. 
- */
-function clearButton() {
-    resultsDisplay.textContent = '0';
-    resultsDisplayNum = undefined;
-}
+function addOperation(operation) {
+    //Enters if when operation is clicked for the first time
+    if(!storedInput) {
+        //Need to store the inputted number
+        storedInput = parseInt(displayDiv.textContent); 
 
-//This function is called when the equals sign is pressed
-function equals() {
-    
-}
-
-/* This method adds a number to the display.
- * If the user clicks 0 and the display is currently displaying 
- * 0, then it won't change.
- * If the user inputs a number when the screen is displaying 0, 
- * then the 0 will be replaced by the selected number.
- */
-function addToDisplay(num) {
-    //Checks if a 0 was entered while displaying 0
-    if (num == 0 && resultsDisplay.textContent == '0') {        
-    }
-    //Replaces the 0 if another number is clicked while displaying 0
-    else if(resultsDisplay.textContent == '0') {
-        resultsDisplay.textContent = '';
-        resultsDisplay.textContent += `${num}`;
-    }
-    else {
-        resultsDisplay.textContent += `${num}`;
-    }
-}
-
-/* This function is called when a calculator operand is clicked.
- * It stores the operand passed into it into the global variable 
- * currentOperator. 
- * Then it checks if there was a number already stored in global
- * variable resultsDisplayNum. If yes, then it passes the 
- * inputted operand, the number stored in resultsDisplayNum, and
- * the current number in the display to operate. It updates 
- * the display with the return value of operate. 
- * If there was no number already stored in resultsDisplayNum, 
- * then it stores the current display number in the variable
- * and resets the display to 0.
- * This check allows for the user to chain operations and operate
- * on the result of the preious operation. 
- */
-function operandFunction(operator) {
-    currentOperator = operator;
-    
-    //Checks if a number is already stored in resultsDisplayNum
-    if(isNaN(resultsDisplayNum)) {
-        resultsDisplayNum = parseInt(resultsDisplay.textContent);
+        //Display needs to clear after user selects an operation
         clearDisplay();
     }
+
+    operationVar = operation;
+}
+
+function calculateResult() {
+    let currentInput = parseInt(displayDiv.textContent);
+    let result = operate(operationVar, storedInput, currentInput);
+    storedInput = result;
+    isResult = true;
+
+    displayDiv.textContent = result;
+}
+
+/* This function adds an inputted number to the display. 
+ * If the display is currently displaying 0, it replaces it with 
+ * the inputted number. Otherwise, it concatenates the number to
+ * the currently displayed number. 
+ */
+function addToDisplay(num) {    
+    let currentDisplayNum = parseInt(displayDiv.textContent);
+
+    if (currentDisplayNum == 0 || isResult) {
+        displayDiv.textContent = num;
+        isResult = false;
+    }
     else {
-        resultsDisplay.textContent = operate(currentOperator, resultsDisplayNum, parseInt(resultsDisplay.textContent));
-    }   
+        displayDiv.textContent += num;
+        isResult = false;
+    }
 }
 
 //These functions perform basic calculator functions
@@ -107,7 +124,7 @@ function operate(operator, num1, num2) {
             returnValue = divide(num1, num2);
             break;
         default:
-            console.log("Incorrect input");
+            alert("Incorrect input");
     }
 
     if (returnValue) {

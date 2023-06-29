@@ -31,11 +31,6 @@ body {
     grid-template-columns: repeat(6, auto);
 }
 
-.calculator-button {
-    height: 30px;
-    width: 60px;
-}
-
 button {
     background-image: linear-gradient(#f7f8fa ,#e7e9ec);
     background-color: antiquewhite;
