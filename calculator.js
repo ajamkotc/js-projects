@@ -155,4 +155,3 @@ function backspace() {
         displayDiv.textContent = newString;
     }
 }
-
