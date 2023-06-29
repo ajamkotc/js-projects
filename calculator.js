@@ -22,25 +22,25 @@ numberButtons.forEach((button) => {
     });
 });
 
-/* Adds listener for the clear button. 
- * When the clear button is pressed, the results div is set to 0.
- */
+// Adds listener for the clear button which calls clear()
 const clearButton = document.querySelector("#clear");
 clearButton.addEventListener('click', clear);
 
-//Adds listener for equals button. 
+//Adds listener for equals button which calls calculateResult() 
 const equalsButton = document.querySelector("#equals");
 equalsButton.addEventListener('click', calculateResult);
 
-/* Adds listeners for the operation buttons. 
- * 
- */
+//Adds listeners for the operation buttons
 const calcButtons = document.querySelectorAll(".calculator-button");
 calcButtons.forEach((button) => {
     button.addEventListener('click', function() {
         addOperation(button.textContent);
     });
 });
+
+//Adds a listener for the delete button
+const deleteButton = document.querySelector("#delete");
+deleteButton.addEventListener('click', backspace)
 
 //Clears the display and displays only 0.
 function clearDisplay() {displayDiv.textContent = 0;}
@@ -53,6 +53,7 @@ function clear() {
     isResult = false;
 }
 
+//Stores the selected operation and displayed number
 function addOperation(operation) {
     //Enters if when operation is clicked for the first time
     if(!storedInput) {
@@ -66,6 +67,9 @@ function addOperation(operation) {
     operationVar = operation;
 }
 
+/* Performs the stored operation on the stored number and currently
+ * displayed numberButtons
+ */
 function calculateResult() {
     let currentInput = parseInt(displayDiv.textContent);
     let result = operate(operationVar, storedInput, currentInput);
@@ -136,3 +140,19 @@ function operate(operator, num1, num2) {
 
     return returnValue;
 }
+
+//Adds functionality to the backspace button
+function backspace() {
+    let displayedNum = displayDiv.textContent;
+
+    //If the display contains only a single number, resets it to 0
+    if (displayedNum.length == 1) {
+        clearDisplay();
+    }
+    //If not, removes the last character of the display string.
+    else {
+        let newString = displayedNum.slice(0, -1);
+        displayDiv.textContent = newString;
+    }
+}
+
